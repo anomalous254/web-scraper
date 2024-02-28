@@ -6,7 +6,6 @@ from termcolor import colored
 
 page = 0
 data = []
-dic = {}
 
 banner_name = '''                                                                                                                    
      ##### #     ##                                       ##               ##### /                    /                 
@@ -52,6 +51,7 @@ while True:
         content = soup.find_all('article', class_='prd _fb col c-prd')
 
         for i in content:
+            dic = {}
             link = i.find('a', class_='core')['href']
             name = i.select_one('.info h3.name').text.strip()
             price = i.select_one('.info div.prc').text.strip()
