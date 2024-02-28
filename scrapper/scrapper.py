@@ -58,15 +58,16 @@ while True:
 
             dic['NAME'] = name
             dic['PRICE'] = price
-            dic['LINK'] = link
+            dic['LINK'] = f'https://www.jumia.co.ke{link}'
 
             data.append(dic)
+           
             
         
 
     else:
         print("Failed to retrieve the page. Status code:", response.status_code)
-    print( colored(f'\n[ + ] Total data Scraped {len(data)} data ', 'blue'))
+    print( colored(f'\n[ + ] Total data Scraped {len(data)} ', 'blue'))
     print(f'\n[info] Sleeping for 5s ')
     print('*'* 30)
 
