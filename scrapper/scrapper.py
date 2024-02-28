@@ -1,8 +1,43 @@
 from bs4 import BeautifulSoup
 import requests
 import time
+import pandas as pd
+from termcolor import colored
 
 page = 0
+data = []
+dic = {}
+
+banner_name = '''                                                                                                                    
+     ##### #     ##                                       ##               ##### /                    /                 
+  ######  /#    #### /                                     ##           ######  /                   #/                  
+ /#   /  / ##    ###/                                      ##          /#   /  /                    ##                  
+/    /  /  ##    # #                                       ##         /    /  /                     ##                  
+    /  /    ##   #                                         ##             /  /                      ##                  
+   ## ##    ##   # ##   ####      /###   ###  /###     ### ##    /###    ## ##              /###    ## /###     /###    
+   ## ##     ##  #  ##    ###  / / ###  / ###/ #### / ######### / ###  / ## ##             / ###  / ##/ ###  / / #### / 
+   ## ##     ##  #  ##     ###/ /   ###/   ##   ###/ ##   #### /   ###/  ## ##            /   ###/  ##   ###/ ##  ###/  
+   ## ##      ## #  ##      ## ##    ##    ##    ##  ##    ## ##    ##   ## ##           ##    ##   ##    ## ####       
+   ## ##      ## #  ##      ## ##    ##    ##    ##  ##    ## ##    ##   ## ##           ##    ##   ##    ##   ###      
+   #  ##       ###  ##      ## ##    ##    ##    ##  ##    ## ##    ##   #  ##           ##    ##   ##    ##     ###    
+      /        ###  ##      ## ##    ##    ##    ##  ##    ## ##    ##      /            ##    ##   ##    ##       ###  
+  /##/          ##  ##      ## ##    /#    ##    ##  ##    /# ##    ##  /##/           / ##    /#   ##    /#  /###  ##  
+ /  #####            #########  ####/ ##   ###   ###  ####/    ######  /  ############/   ####/ ##   ####/   / #### /   
+/     ##               #### ###  ###   ##   ###   ###  ###      ####  /     #########      ###   ##   ###       ###/    
+#                            ###                                      #                                                 
+ ##                   #####   ###                                      ##                                               
+                    /#######  /#                                                                                        
+                   /      ###/                                                                                          
+'''
+sub_heading = "Web Scraper for Python Script"
+
+name_color = 'blue'
+sub_heading_color = 'yellow'
+
+banner = colored(banner_name, name_color) + '\n' + colored(sub_heading, sub_heading_color)
+
+print(banner)
+
 
 while True:
     page += 1
@@ -20,16 +55,24 @@ while True:
             link = i.find('a', class_='core')['href']
             name = i.select_one('.info h3.name').text.strip()
             price = i.select_one('.info div.prc').text.strip()
-            print(f"Name: {name} : {price}")
-            print(f"Link: https://www.jumia.co.ke{link}")
-            print('\n')
+
+            dic['NAME'] = name
+            dic['PRICE'] = price
+            dic['LINK'] = link
+
+            data.append(dic)
             
         
 
     else:
         print("Failed to retrieve the page. Status code:", response.status_code)
+    print( colored(f'\n[ + ] Total data Scraped {len(data)} data ', 'blue'))
+    print(f'\n[info] Sleeping for 5s ')
+    print('*'* 30)
 
-    print('sleeping for 5s')
+    df = pd.DataFrame(data)
+    df.to_excel('data.xlsx', index=False)
+   
     time.sleep(5)
 
     if page == 10:
